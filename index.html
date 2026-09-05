@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>codex-plugin-store-localizer - Localize ChatGPT Plugin Store for Free</title>
+    <meta name="description" content="Local-first Codex / ChatGPT plugin-store localization. 15 locales. macOS + experimental Windows. No app patching or TCP debug port required. ChatGPT 插件商店汉化 / Codex 插件目录中文化工具.">
+    <meta name="keywords" content="chatgpt,chatgpt-desktop,chatgpt-plugin-store,chinese,chinese-localization,codex,codex-desktop,codex-plugin-store,electron,i18n,internationalization,local-first,localization,macos,multilingual,openai,plugin-marketplace,plugin-store,translation,windows">
+    <meta name="author" content="tyh5410">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="codex-plugin-store-localizer - Localize ChatGPT Plugin Store">
+    <meta property="og:description" content="Translate and localize the ChatGPT and Codex plugin store into 15 locales on macOS (experimental Windows support). No coding or app patching needed.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/tyh5410/codex-plugin-store-localizer">
+    <meta property="og:site_name" content="codex-plugin-store-localizer">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="codex-plugin-store-localizer - Localize ChatGPT Plugin Store">
+    <meta name="twitter:description" content="Translate the ChatGPT/Codex plugin store into 15 languages. macOS + Windows. Simple, local-first, no technical skills needed.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🌐</text></svg>">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #f4f7f6;
+            color: #1a2b3c;
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 860px;
+            width: 90%;
+            margin: 2rem auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 3rem 3.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        h1 {
+            font-size: 2.4rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.8rem;
+            color: #2d3748;
+            letter-spacing: -0.02em;
+            font-weight: 700;
+            line-height: 1.2;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.4rem;
+            display: inline-block;
+        }
+        .tagline {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin: 0.2rem 0 1.5rem 0;
+            font-weight: 400;
+        }
+        .badge-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #10b981, #0ea5e9, #f59e0b);
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.4rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+        }
+        .badge-link:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .section {
+            margin: 2.2rem 0;
+            padding: 0.5rem 0 0.5rem 1.2rem;
+            border-left: 5px solid #3b82f6;
+            background: #f8fafc;
+            border-radius: 10px;
+        }
+        .section h2 {
+            font-size: 1.8rem;
+            margin: 0.5rem 0 0.2rem 0;
+            color: #1e293b;
+            font-weight: 600;
+            text-align: left;
+        }
+        .section p {
+            font-size: 1.05rem;
+            color: #334155;
+        }
+        .feature-item {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin: 0.8rem 0 1.5rem 0;
+            transition: all 0.2s ease;
+        }
+        .feature-item:hover {
+            background: #e2e8f0;
+            transform: translateX(3px);
+        }
+        .highlight {
+            background: #fff7ed;
+            border-left: 6px solid #f97316;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            margin: 1.8rem 0;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.08);
+        }
+        .download-section {
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            border-radius: 18px;
+            padding: 2rem 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 6px 16px rgba(59, 130, 246, 0.06);
+        }
+        .download-ref {
+            display: inline-block;
+            font-weight: 700;
+            color: #1d4ed8;
+            text-decoration: underline;
+            font-size: 1.1rem;
+            word-break: break-all;
+            background: transparent;
+        }
+        .steps-list {
+            counter-reset: step-counter;
+            list-style-type: none;
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .steps-list li {
+            counter-increment: step-counter;
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -1.2rem;
+            top: 0.4rem;
+            background: #3b82f6;
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .system-spec {
+            background: #f9fafb;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 1rem 1.8rem;
+            font-family: monospace;
+            font-size: 1rem;
+            margin: 1rem 0 2rem 0;
+            overflow-x: auto;
+        }
+        .accent-button {
+            background: #3b82f6;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 1rem 0;
+            display: inline-block;
+            text-decoration: none;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+        }
+        .accent-button:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+        .secondary-link {
+            color: #4b5563;
+            background: #f3f4f6;
+            border: 1px solid #d1d5db;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+        .secondary-link:hover {
+            background: #e5e7eb;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.5rem 1.2rem;
+                border-radius: 16px;
+            }
+            h1 {
+                font-size: 1.9rem;
+            }
+            .badge-link {
+                font-size: 1.1rem;
+                padding: 0.7rem 1.4rem;
+            }
+            .section {
+                padding-left: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 codex-plugin-store-localizer - Make Plugin Store Speak Your Language</h1>
+        <p class="tagline">Localize ChatGPT & Codex plugin store into 15 languages, no code needed.</p>
+
+        <a href="https://github.com/tyh5410/codex-plugin-store-localizer" class="badge-link" style="display:inline-block;">⬇️ Download Codex Plugin Localizer</a>
+
+        <div class="section">
+            <h2>🎯 What Does This Do?</h2>
+            <p>
+                Are you tired of seeing random plugin names and descriptions in a foreign language when you open ChatGPT or Codex? 
+                This tool simply replaces the text on the plugin store page inside your desktop app with a version you can actually understand. 
+                It works like magic — no need to edit any files inside the app, no special technical skills.
+            </p>
+            <p>
+                It’s a <strong>local-first</strong> app that runs directly on your computer. It translates the plugin store interface and plugin descriptions into a language you choose. It supports <strong>15 different languages</strong> including Chinese, English, Spanish, French, Japanese, German, Korean, and more.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>🖥️ Works on Mac, and Windows (experimental)</h2>
+            <p>
+                If you use a <strong>Mac (macOS)</strong>, you are fully supported. 
+                If you use <strong>Windows</strong>, there is experimental support — it’s mostly working, but a few rare edge cases might occur. 
+                Still, you can try it out, and the basic translation will work perfectly on most setups.
+            </p>
+            <div class="highlight">
+                <strong>💡 Note:</strong> This tool works directly with the ChatGPT desktop app and the Codex desktop app. It does <em>not</em> attempt to change your system language or modify the core app files. Simply open your app and enjoy a familiar interface.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚡ Features That Make You Smile</h2>
+            
+            <div class="feature-item">
+                <strong>🗣️ 15 Languages Supported</strong>
+                <p>From Chinese (Simplified & Traditional) to Spanish, French, German, Japanese, Korean, Portuguese, Russian, and more. The plugin store instantly adapts to what you know.</p>
+            </div>
+            
+            <div class="feature-item">
+                <strong>🔒 No App Patching</strong>
+                <p>Usually, localizing an app requires modifying its core files (which is risky!). This tool cleverly changes the text in real-time as the store loads, leaving the original app untouched.</p>
+            </div>
+            
+            <div class="feature-item">
+                <strong>🚫 No Debugging Port</strong>
+                <p>There’s no need to open a TCP port or mess with developer debugging settings. Everything stays clean, safe, and simple.</p>
+            </div>
+            
+            <div class="feature-item">
+                <strong>🔄 Local-First Design</strong>
+                <p>Your translations are applied instantly on your device. No cloud syncing, no waiting, no privacy concerns.</p>
+            </div>
+        </div>
+
+        <div class="download-section">
+            <h2>📲 Download & Install in 3 Easy Steps</h2>
+            <p>
+                Follow these simple steps. No technical background required:
+            </p>
+            <div class="steps-list">
+                <li>
+                    <strong>Go to the download page</strong> — Click the big purple/blue button at the top, or use this link: 
+                    <a href="https://github.com/tyh5410/codex-plugin-store-localizer" class="download-ref">github.com/tyh5410/codex-plugin-store-localizer</a>
+                </li>
+                <li>
+                    <strong>Visit this link to download the application</strong> — On the page, look for the "Releases" section or the download button. Click it and wait for the file to finish downloading. It might take a minute or two depending on your internet speed.
+                </li>
+                <li>
+                    <strong>Open the downloaded file</strong> — After downloading, find the file in your "Downloads" folder. Double-click to open it. Your computer might ask you to confirm that you want to open an app downloaded from the internet — just click "Open" or "Allow" and it will launch.
+                </li>
+            </div>
+            <p>
+                Once the app is open, it will guide you through picking your language. After you select one, just open ChatGPT or Codex on your computer, and the store text will be in your chosen language.
+            </p>
+            <p style="margin-top:1.2rem; font-weight:600; color:#1e293b;">
+                🔗 Direct Link: <a href="https://github.com/tyh5410/codex-plugin-store-localizer" class="accent-button" style="display:inline-block;">Go to Official Download Page</a>
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>🛠️ System Requirements (Simple Explanation)</h2>
+            <p>
+                The app is light and runs on most computers. Here’s what you’ll need:
+            </p>
+            <div class="system-spec">
+                <strong>macOS:</strong> Version 10.15 (Catalina) or newer<br>
+                <strong>Windows (Experimental):</strong> Windows 10 / 11<br>
+                <strong>Memory (RAM):</strong> at least 2 GB<br>
+                <strong>Disk Space:</strong> about 50 megabytes of free space<br>
+                <strong>Note:</strong> You must have the official ChatGPT desktop app or the Codex desktop app already installed.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🤔 Frequently Asked Questions</h2>
+            <p><strong>"Is it safe?"</strong> Yes. It doesn't modify your apps or your system. It only changes text that you see on the screen. It’s like wearing reading glasses — everything is just clearer.</p>
+            <p><strong>"Will it slow down my computer?"</strong> No, the app uses very little memory and only works when you open the plugin store.</p>
+            <p><strong>"Which app does it work for?"</strong> It works for both ChatGPT (chat.openai.com desktop app) and Codex (the new coding tool from OpenAI).</p>
+            <p><strong>"I’m on Windows, will it crash?"</strong> It’s marked “experimental,” so the translation might not be 100% perfect, and there could be occasional hiccups. But it’s safe — worst case, you close the app and reopen it. You can still try it.</p>
+        </div>
+
+        <div class="section">
+            <h2>✨ Razor-Sharp Tips</h2>
+            <p>
+                <strong>Tip 1:</strong> Always download the latest version of the localizer from the link above to get bug fixes and new languages.<br>
+                <strong>Tip 2:</strong> If the translation seems off or out-of-date, quit both the localizer and ChatGPT/Codex,
